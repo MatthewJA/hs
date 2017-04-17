@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+        #md {
+            display: none;
+        }
+    </style>
+    <link rel="stylesheet" href="atom-one-light.css">
+</head>
+<body>
+
+<main id="main">
+    
+</main>
+
+<script src="showdown.min.js"></script>
+<script src="highlight.pack.js"></script>
+<script>
+    showdown.setFlavor('github');
+    var converter = new showdown.Converter();
+    fetch('main.md').catch(function(e) {
+        document.getElementById('main').innerHTML = 'Error: ' + e.message;
+    })
+    .then(function(r) { return r.text(); })
+    .then(function(t) {
+        var main = document.getElementById('main');
+        main.innerHTML = converter.makeHtml(t);
+        Array.prototype.slice.call(document.querySelectorAll('pre > code'))
+            .map(function(block) {
+                hljs.highlightBlock(block);
+            });
+    });
+</script>
+</body>
+</html>
